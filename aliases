@@ -1,9 +1,24 @@
-# Get External IP / Internet Speed
-alias myip="curl https://ipinfo.io/json" # or /ip for plain-text ip
-alias speedtest="curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -"
+# ─────────────────────────────────────────────────────────────
+# Network
+# ─────────────────────────────────────────────────────────────
+alias myip="curl -s https://ipinfo.io/json"
 
-# Quickly serve the current directory as HTTP
-alias serve='ruby -run -e httpd . -p 8000' # Or python -m SimpleHTTPServer :)
+# ─────────────────────────────────────────────────────────────
+# Dev shortcuts
+# ─────────────────────────────────────────────────────────────
+alias serve="python -m http.server 8000"
+alias c="code ."
+alias py="python"
 
-# NOTE: On Q3 2021, Le Wagon decided to change the Web Dev curriculum default text editor
-alias stt="echo 'Launching VS Code instead of Sublime Text... (cf ~/.aliases)' && code ."
+# ─────────────────────────────────────────────────────────────
+# Navigation
+# ─────────────────────────────────────────────────────────────
+alias ..="cd .."
+alias ...="cd ../.."
+alias ll="ls -lah"
+
+# ─────────────────────────────────────────────────────────────
+# Le Wagon — teaching env
+# ─────────────────────────────────────────────────────────────
+alias lw-on="pyenv shell lewagon && echo '📚 Le Wagon env actif'"
+alias lw-off="pyenv shell --unset && echo '✅ Retour env perso'"

@@ -1,65 +1,75 @@
-#!/bin/zsh
+# ~/.config/starship.toml
+# Doc : https://starship.rs/config/
+
+format = """
+$directory\
+$git_branch\
+$git_status\
+$python\
+$nodejs\
+$cmd_duration\
+$line_break\
+$character"""
 
 # ─────────────────────────────────────────────────────────────
-# Helpers
+# Directory
 # ─────────────────────────────────────────────────────────────
-backup() {
-  target=$1
-  if [ -e "$target" ] && [ ! -L "$target" ]; then
-    mv "$target" "$target.backup"
-    echo "  ↳ backup : $target.backup"
-  fi
-}
-
-symlink() {A
-  file=$1
-  link=$2
-  [ -L "$link" ] && rm "$link"  # Supprime l'ancien symlink si présent
-  ln -s "$file" "$link"
-  echo "  ↳ symlink : $link → $file"
-}
-
-DOTFILES_DIR=$(pwd)
-
-# ─────────────────────────────────────────────────────────────
-# Shell config
-# ─────────────────────────────────────────────────────────────
-echo "\n📄 Shell config..."
-for name in zshrc aliases; do
-  backup "$HOME/.$name"
-  symlink "$DOTFILES_DIR/$name" "$HOME/.$name"
-done
+[directory]
+style = "bold blue"
+truncation_length = 3
+truncate_to_repo = true
 
 # ─────────────────────────────────────────────────────────────
 # Git
 # ─────────────────────────────────────────────────────────────
-echo "\n📄 Git config..."
-backup "$HOME/.gitconfig"
-symlink "$DOTFILES_DIR/gitconfig" "$HOME/.gitconfig"
+[git_branch]
+symbol = " "
+style = "bold purple"
+
+[git_status]
+style = "bold red"
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+modified = "!${count}"
+untracked = "?${count}"
+staged = "+${count}"
+deleted = "✘${count}"
 
 # ─────────────────────────────────────────────────────────────
-# Starship
+# Python — affiché seulement quand un projet Python est détecté
 # ─────────────────────────────────────────────────────────────
-echo "\n🚀 Starship config..."
-mkdir -p "$HOME/.config"
-backup "$HOME/.config/starship.toml"
-symlink "$DOTFILES_DIR/starship.toml" "$HOME/.config/starship.toml"
+[python]
+symbol = "🐍 "
+detect_files = [
+  ".python-version",
+  "pyproject.toml",
+  "requirements.txt",
+  "setup.py",
+  "Pipfile",
+  "uv.lock",
+]
+detect_folders = [".venv", "venv"]
+style = "bold yellow"
 
 # ─────────────────────────────────────────────────────────────
-# VS Code (WSL ou Linux)
+# Node — affiché seulement si package.json / .nvmrc présent
 # ─────────────────────────────────────────────────────────────
-echo "\n💻 VS Code settings..."
-CODE_PATH="$HOME/.vscode-server/data/Machine"
-if [ ! -e "$CODE_PATH" ]; then
-  CODE_PATH="$HOME/.config/Code/User"
-fi
-mkdir -p "$CODE_PATH"
-backup "$CODE_PATH/settings.json"
-symlink "$DOTFILES_DIR/settings.json" "$CODE_PATH/settings.json"
+[nodejs]
+symbol = " "
+detect_files = ["package.json", ".nvmrc"]
+style = "bold green"
 
 # ─────────────────────────────────────────────────────────────
-# Done
+# Durée de commande — affichée si > 2s
 # ─────────────────────────────────────────────────────────────
-echo "\n✅ Dotfiles installés !"
-echo "\nProchaine étape :"
-echo "  exec zsh"
+[cmd_duration]
+min_time = 2_000
+format = "[$duration](bold yellow) "
+
+# ─────────────────────────────────────────────────────────────
+# Caractère de prompt
+# ─────────────────────────────────────────────────────────────
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
