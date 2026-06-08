@@ -16,9 +16,3 @@ alias py="python"
 alias ..="cd .."
 alias ...="cd ../.."
 alias ll="ls -lah"
-
-# ─────────────────────────────────────────────────────────────
-# Le Wagon — teaching env
-# ─────────────────────────────────────────────────────────────
-alias lw-on="pyenv shell lewagon && echo '📚 Le Wagon env actif'"
-alias lw-off="pyenv shell --unset && echo '✅ Retour env perso'"

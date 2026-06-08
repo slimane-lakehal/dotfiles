@@ -82,3 +82,12 @@ type -a nvm > /dev/null && load-nvmrc
 # Starship prompt
 # ─────────────────────────────────────────────────────────────
 type -a starship > /dev/null && eval "$(starship init zsh)"
+# Added by dbt Fusion extension (ensure dbt binary dir on PATH)
+if [[ ":$PATH:" != *":/home/slim/.local/bin:"* ]]; then
+  export PATH=/home/slim/.local/bin:"$PATH"
+fi
+# Added by dbt Fusion extension
+alias dbtf=/home/slim/.local/bin/dbt
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/bin/terraform terraform
